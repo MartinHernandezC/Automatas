@@ -4,7 +4,7 @@ from tkinter.scrolledtext import ScrolledText
 
 class Automata:
     def __init__(self): #Definimos todos los tipos de caracteres
-        self.keywords = ["main", "if", "else", "switch", "case", "default", "for", "while", "break", "int", "String", "double", "char", "print"]
+        self.keywords = ["main","if", "else", "switch", "case", "default", "for", "while", "break", "int", "String", "double", "char", "print"]
         self.rel_operators = ["<", "<=", ">", ">=", "==", "!="]
         self.log_operators = ["&&", "||", "!"]
         self.arith_operators = ["+", "-", "*", "/", "%"]
@@ -39,7 +39,7 @@ class Automata:
     def is_line_comment(self, word):#Comentarios Normales
         return word.startswith('//')
 
-    def identify_token(self, word):#toma una palabra y determina su tipo según las reglas anteriores. Retorna el tipo del token como un string, como "Keyword", "Identifier", "Integer", "String", etc.
+    def identify_token(self, word):#toma una palabra y determina su tipo según las reglas anteriores. 
         if self.is_keyword(word):
             return "Keyword"
         elif self.is_identifier(word):
@@ -135,7 +135,7 @@ class TokenAnalyzer:
         self.result_area.delete(1.0, tk.END)
         self.result_area.insert(tk.END, result)
 
-    def tokenize(self, content):#Analizamos caracter por caracter
+    def tokenize(self, content):#Analizamos/Separamos caracter por caracter
         tokens = []
         current_token = ""
         i = 0

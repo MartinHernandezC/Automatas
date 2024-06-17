@@ -1,0 +1,84 @@
+import tkinter as tk
+from tkinter import filedialog, scrolledtext
+
+class AFD:
+    def __init__(self):
+        self.transitions = {
+            1: {'w': 12, 'e': 15, 'other': 1},
+            12: {'w': 12, 'e': 135, 'other': 1},
+            135: {'w': 12, 'e': 15, 'b': 146, 'other': 1},
+            146: {'w': 12, 'e': 15, 'a': 17, 'other': 1},
+            15: {'b': 16, 'w': 12, 'e': 15, 'other': 1},
+            16: {'a': 17, 'w': 12, 'e': 15, 'other': 1},
+            17: {'y': 18, 'w': 12, 'e': 15, 'other': 1},
+            18: {'w': 12, 'e': 15, 'other': 1},
+        }
+        self.accept_states = {146, 18}
+        self.reset()
+
+    def reset(self):
+        self.current_state = 1
+        self.web_count = 0
+        self.ebay_count = 0
+
+    def process(self, char):
+        char = char.lower()
+        if char in self.transitions[self.current_state]:
+            self.current_state = self.transitions[self.current_state][char]
+        else:
+            self.current_state = self.transitions[self.current_state]['other']
+        self.check_state()
+
+    def check_state(self):
+        if self.current_state == 146:
+            self.web_count += 1
+          
+        if self.current_state == 18:
+            self.ebay_count += 1
+        
+
+class TokenAnalyzerApp:
+    def __init__(self, master):
+        self.master = master
+        self.master.title("Token Analyzer")
+
+        self.afd = AFD()
+
+        self.label = tk.Label(master, text="Token Analyzer")
+        self.label.pack()
+
+        self.text_area = scrolledtext.ScrolledText(master, width=80, height=20)
+        self.text_area.pack()
+
+        self.load_button = tk.Button(master, text="Load File", command=self.load_file)
+        self.load_button.pack()
+
+        self.analyze_button = tk.Button(master, text="Analyze", command=self.analyze_file)
+        self.analyze_button.pack()
+
+        self.result_area = scrolledtext.ScrolledText(master, width=80, height=20)
+        self.result_area.pack()
+
+    def load_file(self):
+        file_path = filedialog.askopenfilename(filetypes=[("Text Files", "*.txt")])
+        if file_path:
+            with open(file_path, "r") as file:
+                content = file.read()
+                self.text_area.delete(1.0, tk.END)
+                self.text_area.insert(tk.END, content)
+
+    def analyze_file(self):
+        content = self.text_area.get(1.0, tk.END).strip()
+        self.afd.reset()
+        
+        for char in content:
+            self.afd.process(char)
+
+        result = f"Token Analysis Report:\nWeb: {self.afd.web_count}\nEbay: {self.afd.ebay_count}"
+        self.result_area.delete(1.0, tk.END)
+        self.result_area.insert(tk.END, result)
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = TokenAnalyzerApp(root)
+    root.mainloop()
