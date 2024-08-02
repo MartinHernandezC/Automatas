@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import filedialog, scrolledtext
 
 class AFD:
-    def __init__(self):
+    def __init__(self): #Con un diccionario definimos las transiciones y también definimos los estados de aceptación
         self.transitions = {
             1: {'w': 12, 'e': 15, 'other': 1},
             12: {'w': 12, 'e': 135, 'other': 1},
@@ -16,20 +16,20 @@ class AFD:
         self.accept_states = {146, 18}
         self.reset()
 
-    def reset(self):
+    def reset(self):#Este estado "simula" regresar al estado inicial, cuando le entra cualquier cosa (Como se ve en el automata)
         self.current_state = 1
         self.web_count = 0
         self.ebay_count = 0
 
-    def process(self, char):
+    def process(self, char):#Discretamente conviertimos e interpretamos los caracteres como minusculas
         char = char.lower()
-        if char in self.transitions[self.current_state]:
+        if char in self.transitions[self.current_state]: #Recorremos los estados según caracter
             self.current_state = self.transitions[self.current_state][char]
         else:
             self.current_state = self.transitions[self.current_state]['other']
-        self.check_state()
+        self.check_state()#Verificamos si estamos en un estado de aceptación
 
-    def check_state(self):
+    def check_state(self):#validamos si estamos en un estado de aceptación, si sí incrementan los contadores
         if self.current_state == 146:
             self.web_count += 1
           
@@ -37,7 +37,7 @@ class AFD:
             self.ebay_count += 1
         
 
-class TokenAnalyzerApp:
+class TokenAnalyzerApp:#Eventos y GUI
     def __init__(self, master):
         self.master = master
         self.master.title("Token Analyzer")
