@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import filedialog, scrolledtext
 
 class AFD:
-    def __init__(self): #Con un diccionario definimos las transiciones y también definimos los estados de aceptación
+    def __init__(self): #Definimos las transiciones y también definimos los estados de aceptación
         self.transitions = {
             1: {'w': 12, 'e': 15, 'other': 1},
             12: {'w': 12, 'e': 135, 'other': 1},
